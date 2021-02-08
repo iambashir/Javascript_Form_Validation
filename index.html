@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> IDB Form Validation Assignment </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #dbdbd9;
+        }
+
+        #d1 {
+            background-color: #f0f0ef;
+            border-radius: 7px;
+            width: 400px;
+            box-shadow: 0 4px 8px 0 #00000033, 0 6px 20px 0 #00000030;
+        }
+        #d2{background-color: #ffffff; border-radius: 7px;}
+    </style>
+</head>
+                <!-- Form validation by Bashir Hossain -->
+<body><br>
+    <div class="container" id="d1">
+        <form name="demo" action="#" method="POST" onsubmit="checkValidation(); return false">
+            <div class="form" style="padding: 15px;">
+                <div id="d2">
+                <label >&nbsp;<b> Batch ID : </b> JEE/TCLD-M/45/01</label><br>
+                <label >&nbsp;<b> Trainee ID : </b> 1259855 </label><br>
+                <label >&nbsp;<b> Name : </b> Bashir Hossain  </label><br>
+            </div>
+                <legend style="text-align: center;"><h3> Registration Form </h3></legend>
+                            <!-- Input field start -->
+                <b> User ID : </b> <input type="text" name="user" id="user" class="form-control">
+                <b> Password : </b> <input type="password" name="password" id="password" class="form-control">
+                <b> Name : </b> <input type="text" name="name" id="name" class="form-control">
+                <b> Address : </b> <input type="text" name="address" id="address" class="form-control">
+                <b> Country : </b> <select name="country" class="form-control">
+                    <option selected disabled value=""> Pleas select a country </option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="India">India</option>
+                    <option value="Srilonka">Srilonka</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="Bhutan">Bhutan</option>
+                </select>
+                <b> Zip Code : </b> <input type="text" name="zip" id="zip" class="form-control">
+                <b> E-mail : </b> <input type="email" name="email" id="email" class="form-control">
+                <b> Sex : </b> &nbsp; <input name="sex" id="sex" value="Male" type="radio"> Male
+                                      <input name="sex" id="sex" value="Female" type="radio"> Female <br>
+                <b> Language : </b> <input name="lang" value="English" type="checkbox"> English
+                <input name="lang" value="Non English" type="checkbox"> Non English <br>
+                <b> About : </b> <textarea name="about" id="about" class="form-control"></textarea><br>
+                <p style="text-align: center;">
+                    <!-- SUBMIT BUTTON  -->
+                    <input value="Submit" type="submit" class="btn btn-primary"> 
+                </p>
+            </div>
+        </form>
+    </div> <br>
+
+    <!--Validation Start-->
+    <script>
+        const passFormat = /[` !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        const nameFormat = /[`!@#$%^&*()_+\-=\[\]{};.'"\\|,<>\/?~0123456789]/;
+        const mailFormat = /[ `!#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+        const numFormat = /^[0-9]+$/;
+
+        function checkValidation() {
+            var flag = true;
+            //checking User ID
+            var userID = document.forms['demo'].elements[0].value;
+            if (userID == "" || userID.length < 5 || userID.length > 12) {
+                alert("User ID should not be empty and length have to be 5 to 12");
+                document.getElementById("user").focus();
+                flag = false; return false;
+            } 
+
+            //checking password
+            var userPassword = document.forms['demo'].elements[1].value;
+            if (userPassword == "" || userPassword.length < 7 || userPassword.length > 12) {
+                alert("Password should not be empty and length have to be 7 to 12");
+                document.getElementById("user").focus();
+                flag = false; return false;
+            }
+
+            //cheking user name
+            var userName = document.forms['demo'].elements[2].value;
+            if (userName == "" || nameFormat.test(userName)) {
+                alert("Your name should not be empty and have to be alphabate only");
+                document.getElementById("name").focus();
+                flag = false; return false;
+            }
+
+            //Address (Optional)
+            var userAddress = document.forms['demo'].elements[3].value;
+
+            //User country validation
+            var userCountry = document.forms['demo'].country.value;
+            if (userCountry == "") {
+                alert("Please select your country");
+                flag = false; return false;
+            }
+            //Use zip code validation
+            var userZip = document.forms['demo'].elements[5].value;
+            if (userZip == "" || !numFormat.test(userZip) || passFormat.test(userZip) ) {
+                alert("Your Zip Code should not be empty and must have to be number only");
+                document.getElementById("zip").focus();
+                flag = false; return false;
+            }
+
+            //User email validation
+            var userEmail = document.forms['demo'].elements[6].value;
+            if (mailFormat.test(userEmail)) {
+                alert("Your email contains some unnecessary symbols or spaces");
+                document.getElementById("email").focus();
+                flag = false; return flase;
+            } else {
+                var atTheRaite = userEmail.indexOf('@');
+                if (atTheRaite > 0) {
+                    var dot = userEmail.lastIndexOf('.');
+                    if (((dot - atTheRaite) <= 2) || (userEmail.length - (dot + 1)) < 2) {
+                        alert("Please enter a valid email");
+                        document.getElementById("email").focus();
+                        flag = false; return false;
+                    }
+                } else {
+                    alert("Please enter a valid email");
+                    document.getElementById("email").focus();
+                    flag = false; return false;
+                }
+            }
+            //Ser sex validation
+            var userSex = document.forms['demo'].sex.value;
+            if (userSex == "") {
+                alert("Please select your sex");
+                flag = false; return false;
+            }
+            //User language validation
+            var dLength = document.forms[0].lang.length;
+            var userLanguage = "";
+            if (!document.forms['demo'].lang[0].checked && !document.forms['demo'].lang[1].checked) {
+                alert("Please select your Language");
+                flag = false; return false;
+            } else {
+                for (var i = 0; i < dLength; i++) {
+                    if (document.forms['demo'].lang[i].checked) {
+                        userLanguage += document.forms['demo'].lang[i].value + " ";
+                    }
+                }
+            }
+            //About (Optional)
+            var userAbout = document.forms['demo'].elements[11].value;
+
+            if (flag) {
+                //******* Show value in a new page *******
+                var newWindow = window.open();
+                newWindow.document.write("<div  style='text-align:center;'><p id='new_page'>  </p></div>");
+                newWindow.document.getElementById("new_page").innerHTML = "<b><u> REGISTRATION INFORMATION </u></b></br>"
+
+                    + "<br/><b>User ID  : </b>" + userID
+                    + "<br/><b> Password : </b> " + userPassword
+                    + "<br/><b> Name : </b>" + userName
+                    + "<br/><b> Address : </b>" + userAddress
+                    + "<br/><b> Country : </b>" + userCountry
+                    + "<br/><b> Zip Code : </b>" + userZip
+                    + "<br/><b>Email : </b>" + userEmail
+                    + "<br/><b> Sex : </b>" + userSex
+                    + "<br/><b> Language : </b>" + userLanguage
+                    + "<br/><b> About : </b>" + userAbout;
+            }
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
